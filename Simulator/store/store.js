@@ -1,5 +1,6 @@
 import { compose, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from '@redux-devtools/extension';
 import reducers from '../reducers/reducers';
 import { defaultState } from '../utils/consts';
 
@@ -18,10 +19,14 @@ const middlewares = [thunk];
 // https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd/related?hl=en
 const devTools = window.devToolsExtension ? window.devToolsExtension() : f => f;
 
+/* eslint-disable no-underscore-dangle */
 const store = createStore(
   reducers,
   defaultState,
-  compose(applyMiddleware(...middlewares), devTools)
+  composeWithDevTools(compose(applyMiddleware(...middlewares), devTools))
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+/* eslint-enable */
+
 
 export default store;
